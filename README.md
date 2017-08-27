@@ -32,7 +32,7 @@ Strike through the todos which are done.
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://imgur.com/a/kafYe.gif' title='Simple Todo List Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://imgur.com/1FwyQE1.gif' title='Simple Todo List Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
