@@ -14,16 +14,13 @@ public class DeleteTodoDialogFragment extends DialogFragment {
     private Handler handler;
     private ConfirmDialogListener mListener;
 
-    //对外开放的接口
-    public interface ConfirmDialogListener
-    {
+    public interface ConfirmDialogListener {
         void onLoginInputComplete();
     }
 
     public static DeleteTodoDialogFragment newInstance(String title) {
         DeleteTodoDialogFragment frag = new DeleteTodoDialogFragment();
         Bundle args = new Bundle();
-        //args.putString("todoId", todoId);
         args.putString(TITLE, title);
         frag.setArguments(args);
         return frag;
@@ -31,7 +28,6 @@ public class DeleteTodoDialogFragment extends DialogFragment {
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String title = getArguments().getString("title");
-        //final String todoId = getArguments().getString("deleteId");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(MESSAGE);
@@ -42,12 +38,9 @@ public class DeleteTodoDialogFragment extends DialogFragment {
                 mListener = (ConfirmDialogListener) getActivity();
                 mListener.onLoginInputComplete();
 
-
             }
         });
-
         alertDialogBuilder.setNegativeButton("Cancel", null);
-
         return alertDialogBuilder.create();
     }
 
@@ -58,6 +51,5 @@ public class DeleteTodoDialogFragment extends DialogFragment {
             mListener = (ConfirmDialogListener) getActivity();
         }
     }
-
 }
 

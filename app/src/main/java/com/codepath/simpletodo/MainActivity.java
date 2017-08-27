@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             todo = data.getParcelableExtra(KEY_TODO);
             updateTodo(todo);
         }
-}
+    }
 
     public void deleteTodo(String todoId) {
         for (int i = 0; i < todos.size(); i++) {
@@ -112,6 +112,5 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new ListAdapter(this, todos);
         ((ListView) findViewById(R.id.main_list_view)).setAdapter(adapter);
-
     }
 }

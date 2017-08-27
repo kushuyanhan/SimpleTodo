@@ -26,7 +26,7 @@ import static com.codepath.simpletodo.ListAdapter.DONE;
 import static com.codepath.simpletodo.ListAdapter.TODO;
 import static com.codepath.simpletodo.NewTodoActivity.KEY_TODO;
 
-public class EditTodoActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class EditTodoActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private EditText todoId;
     private EditText todoName;
     private EditText todoNote;
@@ -53,15 +53,12 @@ public class EditTodoActivity extends AppCompatActivity implements DatePickerDia
     }
 
     private void setupUI() {
-        //todoId = (EditText) findViewById(R.id.todo_id);
         todoName = (EditText) findViewById(R.id.todo_name);
         todoNote = (EditText) findViewById(R.id.todo_notes);
         todoDate = (TextView) findViewById(R.id.todo_date);
         todoStatus = (TextView) findViewById(R.id.todo_status);
         todoPriority = (TextView) findViewById(R.id.todo_priority);
-
         todoCalendar = (ImageView) findViewById(R.id.todo_calendar);
-
         morePriority = (ImageButton) findViewById(R.id.moreMenu_priority);
         moreStatus = (ImageButton) findViewById(R.id.moreMenu_status);
 
@@ -69,7 +66,7 @@ public class EditTodoActivity extends AppCompatActivity implements DatePickerDia
             if (todo.status.equals(DONE)) {
                 UIUtils.setTextViewStrikeThrough(todoName, true);
             }
-            if (todo.status.equals(TODO)){
+            if (todo.status.equals(TODO)) {
                 UIUtils.setTextViewStrikeThrough(todoName, false);
             }
 
@@ -82,8 +79,8 @@ public class EditTodoActivity extends AppCompatActivity implements DatePickerDia
         }
 
     }
-    private void setupStatus() {
 
+    private void setupStatus() {
         moreStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +107,6 @@ public class EditTodoActivity extends AppCompatActivity implements DatePickerDia
     }
 
     private void setupPriority() {
-
         morePriority.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,11 +133,9 @@ public class EditTodoActivity extends AppCompatActivity implements DatePickerDia
                 popup.show(); //showing popup menu
             }
         });
-
     }
 
     private void setupDatePicker() {
-
         todoCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,15 +151,12 @@ public class EditTodoActivity extends AppCompatActivity implements DatePickerDia
         });
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.edit_item_menu, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -180,6 +171,7 @@ public class EditTodoActivity extends AppCompatActivity implements DatePickerDia
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // this method will be called after user has chosen date from the DatePickerDialog
@@ -205,7 +197,5 @@ public class EditTodoActivity extends AppCompatActivity implements DatePickerDia
         setResult(Activity.RESULT_FIRST_USER, result);
         finish();
     }
-
-
 }
 

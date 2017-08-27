@@ -74,7 +74,6 @@ public class ListAdapter extends BaseAdapter {
         setPriorityColor(vh, todo);
         setTodoStrikeThrough(vh, todo);
 
-
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,8 +99,6 @@ public class ListAdapter extends BaseAdapter {
                 break;
             default:
                 break;
-
-
         }
     }
 
@@ -109,7 +106,7 @@ public class ListAdapter extends BaseAdapter {
         if (todo.status.equals(DONE)) {
             UIUtils.setTextViewStrikeThrough(vh.todoName, true);
         }
-        if (todo.status.equals(TODO)){
+        if (todo.status.equals(TODO)) {
             UIUtils.setTextViewStrikeThrough(vh.todoName, false);
         }
     }
@@ -117,7 +114,5 @@ public class ListAdapter extends BaseAdapter {
     private static class ViewHolder {
         TextView todoName;
         TextView todoPriority;
-
-
     }
 }

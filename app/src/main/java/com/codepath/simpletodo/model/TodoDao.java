@@ -22,7 +22,6 @@ public class TodoDao {
     private SQLiteDatabase db;
     private TodoDatabaseHelper helper;
 
-
     //Table Names
     private static final String TABLE_TODOS = "todo";
 
@@ -84,7 +83,6 @@ public class TodoDao {
         SQLiteDatabase db = helper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put("id",todo.id);
         values.put(KEY_TODO_NAME, todo.name);
         values.put(KEY_TODO_PRIORITY, todo.priority);
         values.put(KEY_TODO_STATUS, todo.status);
@@ -121,7 +119,5 @@ public class TodoDao {
     public boolean deleteTodo(String todoId) {
         db = helper.getReadableDatabase();
         return db.delete(TABLE_TODOS, "id = ? ", new String[]{todoId}) > 0;
-
-
     }
 }

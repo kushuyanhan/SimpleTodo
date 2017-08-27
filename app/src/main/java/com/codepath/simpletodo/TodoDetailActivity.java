@@ -20,13 +20,11 @@ public class TodoDetailActivity extends AppCompatActivity implements DeleteTodoD
     public static final int REQUEST_CODE = 300;
     public static final String TAG = "delete_todo";
     public static final String DONE = "DONE";
-    private TextView idTv;
     private TextView nameTv;
     private TextView dateTv;
     private TextView noteTv;
     private TextView priorityTv;
     private TextView statusTv;
-
 
     private Todo todo;
 
@@ -49,14 +47,12 @@ public class TodoDetailActivity extends AppCompatActivity implements DeleteTodoD
         priorityTv = (TextView) findViewById(R.id.todo_detail_priority);
 
         if (todo != null) {
-
             nameTv.setText(todo.name);
             setStrikeThrough();
             noteTv.setText(todo.note);
             dateTv.setText(todo.date);
             statusTv.setText(todo.status);
             priorityTv.setText(todo.priority);
-
         }
     }
 
@@ -68,13 +64,11 @@ public class TodoDetailActivity extends AppCompatActivity implements DeleteTodoD
         }
     }
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.detail_item_menu, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -52,7 +52,6 @@ public class NewTodoActivity extends AppCompatActivity implements DatePickerDial
         setupStatus();
     }
 
-
     private void setupStatus() {
 
         moreStatus.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +80,6 @@ public class NewTodoActivity extends AppCompatActivity implements DatePickerDial
     }
 
     private void setupPriority() {
-
         morePriority.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +110,6 @@ public class NewTodoActivity extends AppCompatActivity implements DatePickerDial
     }
 
     private void setupDatePicker() {
-
         todoCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,7 +180,6 @@ public class NewTodoActivity extends AppCompatActivity implements DatePickerDial
         // this method will be called after user has chosen date from the DatePickerDialog
         Calendar c = Calendar.getInstance();
         c.set(year, monthOfYear, dayOfMonth);
-
         todoDate.setText(DateUtils.dateToStringDate(c.getTime()));
     }
 }
