@@ -4,7 +4,7 @@
 
 Submitted by: Harper Xue
 
-Time spent: 5 hours spent in total
+Time spent: 50 hours spent in total
 
 ## User Stories
 
