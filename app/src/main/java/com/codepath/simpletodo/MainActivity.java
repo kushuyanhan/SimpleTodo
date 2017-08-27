@@ -1,111 +1,117 @@
 package com.codepath.simpletodo;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
 
-import org.apache.commons.io.FileUtils;
+import com.codepath.simpletodo.model.Todo;
+import com.codepath.simpletodo.model.TodoDao;
+import com.codepath.simpletodo.model.TodoDatabaseHelper;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+
+import static com.codepath.simpletodo.NewTodoActivity.KEY_TODO;
 
 
 public class MainActivity extends AppCompatActivity {
-    private final int REQUEST_CODE = 20;
+    public static final int REQ_CODE_TODO_NEW = 100;
+    public static final int REQ_CODE_TODO_EDIT = 200;
 
-    ArrayList<String> items;
-    ArrayAdapter<String> itemsAdapter;
-    ListView lvItems;
+    private ListAdapter adapter;
+    private List<Todo> todos;
+    private TodoDao todoDao;
+    private Todo todo;
+
+    public static MainActivity instance = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lvItems = (ListView) findViewById(R.id.lvItems);
-        items = new ArrayList<>();
-        
-        readItems();
-        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-        lvItems.setAdapter(itemsAdapter);
+        instance = this;
 
-        setupListViewListener();
+        TodoDatabaseHelper helper = TodoDatabaseHelper.getInstance(MainActivity.this);
+        SQLiteDatabase db = helper.getWritableDatabase();
 
-        setupItemListener();
+        //load data
+        todoDao = new TodoDao(this);
+        todos = todoDao.findAll();
+
+        adapter = new ListAdapter(this, todos);
+        ((ListView) findViewById(R.id.main_list_view)).setAdapter(adapter);
 
     }
 
-    public void onAddItem(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-        String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
-        etNewItem.setText("");
-        writeItems();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_menu, menu);
+        return true;
     }
 
-    private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        } catch (IOException e) {
-            items = new ArrayList<>();
-        }
-    }
-
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            FileUtils.writeLines(todoFile, items);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setupListViewListener() {
-
-        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                items.remove(i);
-                itemsAdapter.notifyDataSetChanged();
-                writeItems();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add:
+                Intent intent = new Intent(MainActivity.this, NewTodoActivity.class);
+                startActivityForResult(intent, REQ_CODE_TODO_NEW);
                 return true;
-            }
-        });
-    }
-
-    private void setupItemListener() {
-
-        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String content = (String) adapterView.getItemAtPosition(i);
-                Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
-
-                intent.putExtra("content", content);
-                intent.putExtra("pos",i);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
-        });
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            String content = data.getExtras().getString("content");
-            int pos = data.getExtras().getInt("pos");
-            items.remove(pos);
-            items.add(pos, content);
-            itemsAdapter.notifyDataSetChanged();
-            writeItems();
+        if (requestCode == REQ_CODE_TODO_NEW && resultCode == Activity.RESULT_OK) {
+            todo = data.getParcelableExtra(KEY_TODO);
+            insertTodo(todo);
+        } else if (requestCode == REQ_CODE_TODO_EDIT && resultCode == Activity.RESULT_FIRST_USER) {
+            todo = data.getParcelableExtra(KEY_TODO);
+            updateTodo(todo);
         }
+}
+
+    public void deleteTodo(String todoId) {
+        for (int i = 0; i < todos.size(); i++) {
+            if (String.valueOf(todos.get(i).id).equals(todoId)) {
+                todos.remove(i);
+                break;
+            }
+        }
+        adapter.notifyDataSetChanged();
+        todoDao.deleteTodo(todoId);
+    }
+
+    private void updateTodo(Todo todo) {
+        for (int i = 0; i < todos.size(); ++i) {
+            Todo item = todos.get(i);
+            if (String.valueOf(item.id).equals(String.valueOf(todo.id))) {
+                todos.set(i, todo);
+                break;
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+        todoDao.updateData(todo);
+    }
+
+    private void insertTodo(Todo todo) {
+        todos.add(todo);
+        todoDao.saveData(todo);
+
+        todos = todoDao.findAll();
+
+        adapter = new ListAdapter(this, todos);
+        ((ListView) findViewById(R.id.main_list_view)).setAdapter(adapter);
+
     }
 }
